@@ -8,10 +8,11 @@ from mysql.connector import Error
 app = Flask(__name__)
 app.static_folder = "static"
 
-# Fungsi koneksi database yang ambil dari environment variables
+# Fungsi koneksi database menggunakan environment variable
 def connect_db():
     return mysql.connector.connect(
         host=os.environ.get("DB_HOST", "localhost"),
+        port=int(os.environ.get("DB_PORT", 3306)),
         user=os.environ.get("DB_USER", "root"),
         password=os.environ.get("DB_PASSWORD", ""),
         database=os.environ.get("DB_NAME", "crud")
