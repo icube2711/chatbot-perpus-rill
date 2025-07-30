@@ -26,35 +26,7 @@ def connect_db():
         database=database
     )
 
-# Fungsi untuk mengimpor file SQL ke database
-def import_sql_dump(file_path="crud.sql"):
-    import re
-    try:
-        conn = connect_db()
-        cur = conn.cursor()
-        print("🚀 Mulai mengimpor SQL dump...")
 
-        with open(file_path, 'r', encoding='utf-8') as f:
-            sql_content = f.read()
-
-        commands = re.split(r';\s*\n', sql_content)
-
-        for command in commands:
-            if command.strip() and not command.strip().startswith('--'):
-                try:
-                    cur.execute(command)
-                except Exception as e:
-                    print("⚠️ Lewati error:", e)
-                    continue
-
-        conn.commit()
-        print("✅ SQL dump berhasil diimport!")
-    except Exception as e:
-        print("❌ Gagal import SQL:", e)
-    finally:
-        if conn.is_connected():
-            cur.close()
-            conn.close()
 
 # Load intents dari database
 def load_intents_from_db():
@@ -79,6 +51,8 @@ def load_intents_from_db():
         if conn.is_connected():
             cur.close()
             conn.close()
+
+intents = load_intents_from_db()
 
 def clean_text(text):
     return re.sub(r"[^\w\s]", "", text.lower()).strip()
@@ -221,7 +195,5 @@ def get_bot_response():
 
 # Run server
 if __name__ == "__main__":
-    import_sql_dump("crud.sql")  # 🚨 Pastikan hanya dijalankan saat deploy pertama!
-    intents = load_intents_from_db()
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host="0.0.0.0", port=port)
