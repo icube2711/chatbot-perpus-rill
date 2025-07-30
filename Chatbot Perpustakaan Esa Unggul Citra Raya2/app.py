@@ -10,11 +10,11 @@ app.static_folder = "static"
 
 # Fungsi koneksi database menggunakan environment variable
 def connect_db():
-    host = os.environ.get("DB_HOST", "localhost")
-    port = int(os.environ.get("DB_PORT", 3306))
-    user = os.environ.get("DB_USER", "root")
-    password = os.environ.get("DB_PASSWORD", "")
-    database = os.environ.get("DB_NAME", "crud")
+    host = os.getenv("DB_HOST")
+    port = int(os.getenv("DB_PORT"))
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
+    database = os.getenv("DB_NAME")
 
     print("🔧 DB:", host, port, user, database)
 
@@ -25,6 +25,7 @@ def connect_db():
         password=password,
         database=database
     )
+
 
 
 # Load intents dari database
