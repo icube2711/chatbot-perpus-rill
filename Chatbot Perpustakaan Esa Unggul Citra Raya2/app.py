@@ -80,8 +80,6 @@ def load_intents_from_db():
             cur.close()
             conn.close()
 
-intents = load_intents_from_db()
-
 def clean_text(text):
     return re.sub(r"[^\w\s]", "", text.lower()).strip()
 
@@ -223,6 +221,7 @@ def get_bot_response():
 
 # Run server
 if __name__ == "__main__":
-    import_sql_dump("crud.sql")  # HANYA DIJALANKAN SEKALI
+    import_sql_dump("crud.sql")  # 🚨 Pastikan hanya dijalankan saat deploy pertama!
+    intents = load_intents_from_db()
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host="0.0.0.0", port=port)
